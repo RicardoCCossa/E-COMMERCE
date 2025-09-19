@@ -1,0 +1,47 @@
+{% extends 'partials/base.html' %}
+{% load static %}
+
+{% block title %}Perfil{% endblock title %}
+
+{% block content %}
+<div class="container d-flex justify-content-center align-items-start my-5">
+    <div class="row w-100">
+
+        <!-- Menu lateral -->
+        <div class="col-lg-3 col-md-4 mb-4">
+            <div class="list-group shadow-sm rounded-3">
+                <h5 class="list-group-item text-primary fw-bold">
+                    Bem-vindo, <span class="text-capitalize">{{ request.user }}</span>
+                </h5>
+                <a href="{% url 'profile' %}" class="list-group-item list-group-item-action active">
+                    <i class="bi bi-person-circle me-2"></i> Perfil
+                </a>
+                <a href="{% url 'address' %}" class="list-group-item list-group-item-action">
+                    <i class="bi bi-geo-alt-fill me-2"></i> Endereços
+                </a>
+            </div>
+        </div>
+
+        <div class="col-sm-8 offset-sm-1">
+            <div class="row">
+                {% for ad in add %}
+                <div class="col-sm-6">
+                    <div class="card m-2">
+                        <div class="card-body">
+                            <h3>Address: {{ forloop.counter }}</h3>
+                            <p>Name: {{ ad.name }}</p>
+                            <p>Locality: {{ ad.locality }}</p>
+                            <p>Mobile: {{ ad.mobile }}</p>
+                            <p>City: {{ ad.city }}</p>
+                            <p>State: {{ ad.state }}</p>
+                            <p>Pincode: {{ ad.zipcode }}</p>
+                            
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

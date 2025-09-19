@@ -1,0 +1,109 @@
+{% extends 'partials/base.html' %}
+{% load static %}
+{% load currency_filters %}
+
+{% block title %}Categorias{% endblock title %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="row">
+        <!-- Sidebar Categorias -->
+        <aside class="col-lg-3 col-md-4 mb-4">
+            <div class="card shadow-sm border-0 rounded-3">
+                <div class="card-header bg-primary text-white fw-bold text-center">
+                    Categorias
+                </div>
+                <div class="list-group list-group-flush">
+                    {% for val in titles %}
+                    <a href="{% url 'category_title' val.title %}"
+                        class="list-group-item list-group-item-action {% if selected_category == val.title %}active{% endif %}">
+                        {{ val.title }}
+                    </a>
+                    {% empty %}
+                    <span class="list-group-item text-muted">Nenhuma categoria encontrada</span>
+                    {% endfor %}
+                </div>
+            </div>
+        </aside>
+
+        <!-- Produtos -->
+        <div class="col-lg-9 col-md-8">
+    <div class="row g-4">
+        {% for prod in products %}
+        <div class="col-md-4 col-sm-6">
+            <div class="card h-100 shadow-sm border-0 rounded-3 product-card position-relative overflow-hidden">
+
+                <!-- Badges -->
+                {% if prod.discounted_price < prod.selling_price %}
+                <span class="badge bg-danger position-absolute top-0 start-0 m-2">Oferta</span>
+                {% endif %}
+                {% if prod.data_da_publicacao|date:"U" > now|date:"U"|add:"-604800" %}
+                <span class="badge bg-success position-absolute top-0 end-0 m-2">Novo</span>
+                {% endif %}
+
+                <!-- Link da imagem e título -->
+                <a href="{% url 'product_detail' prod.pk %}" class="text-decoration-none text-dark">
+                    <div class="overflow-hidden" style="height: 220px; display:flex; justify-content:center; align-items:center; background:#f8f9fa;">
+                        {% if prod.product_image %}
+                        <img src="{{ prod.product_image.url }}" 
+                             class="img-fluid h-100 product-img" 
+                             alt="{{ prod.title }}" 
+                             style="object-fit: contain; transition: transform 0.3s;">
+                        {% else %}
+                        <svg class="bd-placeholder-img w-100" height="220" xmlns="http://www.w3.org/2000/svg"
+                             role="img" preserveAspectRatio="xMidYMid slice" focusable="false">
+                            <title>Sem imagem</title>
+                            <rect width="100%" height="100%" fill="#f0f0f0"></rect>
+                            <text x="50%" y="50%" fill="#999" dy=".3em" text-anchor="middle" font-size="18">
+                                Sem imagem
+                            </text>
+                        </svg>
+                        {% endif %}
+                    </div>
+
+                    <div class="card-body text-center">
+                        <h6 class="card-title fw-bold text-truncate" title="{{ prod.title }}">{{ prod.title }}</h6>
+                        <p class="card-text mb-1 fw-bold text-danger">
+                            {{ prod.discounted_price|metical }}
+                            {% if prod.discounted_price < prod.selling_price %}
+                            <small class="text-muted text-decoration-line-through">
+                                {{ prod.selling_price|metical }}
+                            </small>
+                            {% endif %}
+                        </p>
+                    </div>
+                </a>
+
+                <!-- Botão separado -->
+                <div class="card-footer bg-transparent border-0 text-center">
+                    <a href="{% url 'product_detail' prod.pk %}" class="btn btn-sm btn-primary w-100 mt-2">
+                        Ver Detalhes
+                    </a>
+                </div>
+
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12">
+            <div class="alert alert-info text-center shadow-sm">
+                Nenhum produto disponível nesta categoria.
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<!-- CSS hover e efeito -->
+<style>
+.product-card:hover .product-img {
+    transform: scale(1.05);
+}
+.product-card {
+    transition: transform 0.3s;
+}
+.product-card:hover {
+    transform: translateY(-4px);
+}
+</style>
+
+        {% endblock content %}

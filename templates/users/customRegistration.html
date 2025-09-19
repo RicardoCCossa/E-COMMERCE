@@ -1,0 +1,74 @@
+{% extends 'partials/base.html' %}
+{% load static %}
+
+{% block title %}Criar Conta{% endblock title %}
+
+{% block content %}
+<div class="container d-flex justify-content-center align-items-center" style="min-height: 100vh;">
+    <div class="col-lg-5 col-md-7 col-sm-10">
+        <div class="card shadow-lg rounded-4 border-0">
+            <div class="card-body p-5">
+
+                <!-- Título -->
+                <h3 class="text-center mb-3 fw-bold text-primary">Criar Conta</h3>
+                <p class="text-center text-muted mb-4">Preencha os campos para criar sua conta</p>
+                <hr>
+
+                <!-- Mensagens de sucesso e erro -->
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                            {{ message }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+
+                <!-- Erros globais do formulário -->
+                {% if form.non_field_errors %}
+                    <div class="alert alert-danger alert-dismissible fade show mb-3" role="alert">
+                        <ul class="mb-0">
+                            {% for error in form.non_field_errors %}
+                                <li>{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                {% endif %}
+
+                <!-- Formulário -->
+                <form action="" method="post" novalidate>
+                    {% csrf_token %}
+
+                    <!-- Campos do formulário -->
+                    {% for fm in form %}
+                        <div class="form-floating mb-3">
+                            {{ fm }}
+                            <label for="{{ fm.id_for_label }}">{{ fm.label }}</label>
+
+                            {% if fm.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {{ fm.errors|striptags }}
+                                </div>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+
+                    <!-- Botão -->
+                    <button type="submit" class="btn btn-primary w-100 py-2 rounded-3 shadow-sm">
+                        Criar Conta
+                    </button>
+
+                    <!-- Link para login -->
+                    <p class="text-center mt-4 mb-0">
+                        <small class="text-muted">
+                            Já tem uma conta?
+                            <a href="{% url 'login' %}" class="text-decoration-none fw-semibold">Faça login</a>
+                        </small>
+                    </p>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

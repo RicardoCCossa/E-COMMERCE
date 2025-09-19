@@ -1,0 +1,66 @@
+{% extends 'partials/base.html' %}
+{% load static %}
+
+{% block title %}Contato{% endblock title %}
+
+{% block content %}
+<div class="container py-5">
+
+    <!-- Título da Página -->
+    <section class="text-center mb-5">
+        <h2 class="fw-bold mb-3">Fale Conosco</h2>
+        <p class="fs-5 text-muted">
+            Precisa de ajuda? Nossa equipe está pronta para te atender!  
+            Entre em contato conosco pelos canais abaixo e responderemos o mais rápido possível.
+        </p>
+    </section>
+
+    <!-- Informações de Contato -->
+    <div class="row g-4 justify-content-center text-center">
+
+        <!-- Endereço -->
+        <div class="col-md-4">
+            <div class="card shadow border-0 p-4 h-100">
+                <div class="card-body">
+                    <i class="bi bi-geo-alt-fill fs-1 text-primary"></i>
+                    <h5 class="fw-bold mt-3">Endereço</h5>
+                    <p class="text-muted fs-6">
+                        Av. das Inovações, 123<br>
+                        Maputo, Moçambique
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Telefone -->
+        <div class="col-md-4">
+            <div class="card shadow border-0 p-4 h-100">
+                <div class="card-body">
+                    <i class="bi bi-telephone-fill fs-1 text-success"></i>
+                    <h5 class="fw-bold mt-3">Telefone</h5>
+                    <p class="text-muted fs-6">
+                        +258 84 123 4567<br>
+                        +258 82 987 6543
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- E-mail -->
+        <div class="col-md-4">
+            <div class="card shadow border-0 p-4 h-100">
+                <div class="card-body">
+                    <i class="bi bi-envelope-fill fs-1 text-danger"></i>
+                    <h5 class="fw-bold mt-3">E-mail</h5>
+                    <p class="text-muted fs-6">
+                        suporte@lojaexemplo.com<br>
+                        atendimento@lojaexemplo.com
+                    </p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+{% endblock content %}
