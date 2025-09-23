@@ -1,0 +1,74 @@
+{% extends 'partials/base.html' %}
+{% load static %}
+
+{% block title %}Atualizar Endereço{% endblock title %}
+
+{% block content %}
+<div class="container d-flex justify-content-center align-items-start my-5">
+  <div class="row w-100">
+
+    <!-- Menu lateral -->
+    <div class="col-lg-3 col-md-4 mb-4">
+      <div class="list-group shadow-sm rounded-3">
+        <h5 class="list-group-item text-primary fw-bold mb-0">
+          Bem-vindo, <span class="text-capitalize">{{ request.user }}</span>
+        </h5>
+        {# Removi os links de Perfil e Endereços daqui #}
+      </div>
+    </div>
+
+    <!-- Conteúdo do formulário -->
+    <div class="col-lg-9 col-md-8">
+      <div class="card shadow-lg rounded-4 border-0">
+        <div class="card-body p-5">
+
+          <h3 class="text-center mb-3 fw-bold text-primary">Atualizar Endereço</h3>
+          <p class="text-center text-muted mb-4">Edite os dados do seu endereço</p>
+          <hr>
+
+          <!-- Mensagens -->
+          {% if messages %}
+            {% for msg in messages %}
+              <div class="alert alert-{{ msg.tags }} alert-dismissible fade show" role="alert">
+                {{ msg }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+              </div>
+            {% endfor %}
+          {% endif %}
+
+          <!-- Formulário -->
+          <form action="" method="post" novalidate>
+            {% csrf_token %}
+            <div class="row">
+              {% for fm in form %}
+                <div class="col-md-6 mb-3">
+                  <div class="form-floating">
+                    {{ fm }}
+                    <label for="{{ fm.id_for_label }}">{{ fm.label }}</label>
+                    {% if fm.errors %}
+                      <div class="invalid-feedback d-block">
+                        {{ fm.errors|striptags }}
+                      </div>
+                    {% endif %}
+                  </div>
+                </div>
+              {% endfor %}
+            </div>
+
+            <!-- Botões -->
+            <div class="d-flex gap-3 mt-4">
+              <button type="submit" class="btn btn-primary py-2 rounded-3 shadow-sm flex-fill">
+                Salvar Alterações
+              </button>
+              <a href="{% url 'address' %}" class="btn btn-secondary py-2 rounded-3 shadow-sm flex-fill">
+                Voltar
+              </a>
+            </div>
+          </form>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock content %}

@@ -1,5 +1,5 @@
 from django.contrib.auth import login as auth_login
-from django.shortcuts import render, redirect
+from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from users.forms import CustomerProfileForm, CustomerRegistrationForm, LoginForm
@@ -63,3 +63,23 @@ def profile(request):
 def address(request):
     add = Customer.objects.filter(user=request.user)
     return render(request, 'users/address.html', {'add': add})
+
+@login_required
+def updateAddress(request, pk):
+    """
+    Permite ao usuário autenticado atualizar um endereço específico.
+    """
+    # Busca o endereço do próprio usuário. Se não existir, 404
+    address = get_object_or_404(Customer, pk=pk, user=request.user)
+
+    if request.method == 'POST':
+        form = CustomerProfileForm(request.POST, instance=address)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Endereço atualizado com sucesso!')
+        else:
+            messages.error(request, 'Por favor, corrija os erros abaixo.')
+    else:
+        form = CustomerProfileForm(instance=address)
+
+    return render(request, 'users/updateAddress.html', {'form': form})

@@ -6,6 +6,7 @@ from users.views import (
     custom_login_view,
     custom_password_reset_view,
     profile,
+    updateAddress,
 )
 
 urlpatterns = [
@@ -19,5 +20,6 @@ urlpatterns = [
     # ================================
    path("password-reset/", custom_password_reset_view, name="my_password_reset"),
    path('profile/', profile, name='profile'),
-   path('address/', address, name='address')
+   path('address/', address, name='address'),
+   path('updateAddress/<int:pk>', updateAddress, name='updateAddress')
 ]

@@ -1,47 +1,64 @@
 {% extends 'partials/base.html' %}
 {% load static %}
 
-{% block title %}Perfil{% endblock title %}
+{% block title %}Meus Endereços{% endblock title %}
 
 {% block content %}
-<div class="container d-flex justify-content-center align-items-start my-5">
-    <div class="row w-100">
+<div class="container my-5">
+  <div class="row">
 
-        <!-- Menu lateral -->
-        <div class="col-lg-3 col-md-4 mb-4">
-            <div class="list-group shadow-sm rounded-3">
-                <h5 class="list-group-item text-primary fw-bold">
-                    Bem-vindo, <span class="text-capitalize">{{ request.user }}</span>
-                </h5>
-                <a href="{% url 'profile' %}" class="list-group-item list-group-item-action active">
-                    <i class="bi bi-person-circle me-2"></i> Perfil
-                </a>
-                <a href="{% url 'address' %}" class="list-group-item list-group-item-action">
-                    <i class="bi bi-geo-alt-fill me-2"></i> Endereços
-                </a>
-            </div>
-        </div>
-
-        <div class="col-sm-8 offset-sm-1">
-            <div class="row">
-                {% for ad in add %}
-                <div class="col-sm-6">
-                    <div class="card m-2">
-                        <div class="card-body">
-                            <h3>Address: {{ forloop.counter }}</h3>
-                            <p>Name: {{ ad.name }}</p>
-                            <p>Locality: {{ ad.locality }}</p>
-                            <p>Mobile: {{ ad.mobile }}</p>
-                            <p>City: {{ ad.city }}</p>
-                            <p>State: {{ ad.state }}</p>
-                            <p>Pincode: {{ ad.zipcode }}</p>
-                            
-                        </div>
-                    </div>
-                </div>
-                {% endfor %}
-            </div>
-        </div>
+    <!-- Menu lateral -->
+    <div class="col-lg-3 col-md-4 mb-4">
+      <div class="list-group shadow-sm rounded-3">
+        <h5 class="list-group-item text-primary fw-bold mb-0">
+          Bem-vindo, <span class="text-capitalize">{{ request.user.get_full_name|default:request.user.username }}</span>
+        </h5>
+        <a href="{% url 'profile' %}" class="list-group-item list-group-item-action">
+          <i class="bi bi-person-circle me-2"></i> Perfil
+        </a>
+        <a href="{% url 'address' %}" class="list-group-item list-group-item-action active">
+          <i class="bi bi-geo-alt-fill me-2"></i> Endereços
+        </a>
+      </div>
     </div>
+
+    <!-- Lista de endereços -->
+    <div class="col-lg-9">
+      <h4 class="mb-4">Meus Endereços</h4>
+
+      {% if add %}
+        <div class="row">
+          {% for ad in add %}
+            <div class="col-md-6 mb-3">
+              <div class="card shadow-sm h-100">
+                <div class="card-body">
+                  <h5 class="card-title">
+                    Endereço {{ forloop.counter }}
+                  </h5>
+                  <ul class="list-unstyled mb-3">
+                    <li><strong>Nome:</strong> {{ ad.name }}</li>
+                    <li><strong>Localidade:</strong> {{ ad.locality }}</li>
+                    <li><strong>Telemóvel:</strong> {{ ad.mobile }}</li>
+                    <li><strong>Cidade:</strong> {{ ad.city }}</li>
+                    <li><strong>Província:</strong> {{ ad.get_state_display|default:ad.state }}</li>
+                    <li><strong>Código Postal:</strong> {{ ad.zipcode|default:"-" }}</li>
+                  </ul>
+                  <div class="text-center">
+                    <a href="{% url 'updateAddress' ad.id %}" class="btn btn-sm btn-success">
+                      <i class="bi bi-pencil-square me-1"></i> Editar
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      {% else %}
+        <div class="alert alert-info">
+          Nenhum endereço cadastrado ainda. <a href="{% url 'addAddress' %}">Clique aqui</a> para adicionar um novo.
+        </div>
+      {% endif %}
+    </div>
+  </div>
 </div>
 {% endblock content %}
