@@ -117,6 +117,20 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 LOGIN_REDIRECT_URL = '/profile/'
+
+
+# para testes: o Django vai imprimir o email no console
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+# produção: usar um servidor real de email (exemplo Gmail)
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# EMAIL_HOST = 'smtp.gmail.com'
+# EMAIL_PORT = 587
+# EMAIL_USE_TLS = True
+# EMAIL_HOST_USER = 'seuemail@gmail.com'
+# EMAIL_HOST_PASSWORD = 'suasenha'
+DEFAULT_FROM_EMAIL = 'no-reply@seusite.com'
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
