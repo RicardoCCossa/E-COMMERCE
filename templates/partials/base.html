@@ -21,149 +21,41 @@
 <body>
 
   <header>
-    <!-- NAVBAR PRINCIPAL -->
-    <nav class="navbar navbar-expand-xl navbar-light bg-white shadow-sm sticky-top py-3">
-      <div class="container-fluid px-3">
+  <!-- NAVBAR PRINCIPAL -->
+  <nav class="navbar navbar-expand-xl navbar-light bg-white shadow-sm sticky-top py-3">
+    <div class="container-fluid px-3">
 
-        <!-- LOGO -->
-        <a class="navbar-brand fw-bold text-primary fs-4 d-flex align-items-center" href="{% url 'index' %}">
-          <!--<img src="{% static 'assets/imagens/logo.png' %}" alt="Meteoro" height="40" class="me-2">-->
-          Meteoro
-        </a>
+      <!-- LOGO -->
+      <a class="navbar-brand fw-bold text-primary fs-4 d-flex align-items-center" href="{% url 'index' %}">
+        Meteoro
+      </a>
 
-        <!-- BOTÃO MOBILE -->
-        <button class="navbar-toggler border-0" type="button" data-bs-toggle="offcanvas" data-bs-target="#mobileMenu"
-          aria-controls="mobileMenu">
-          <span class="navbar-toggler-icon"></span>
-        </button>
+      <!-- BOTÃO MOBILE -->
+      <button class="navbar-toggler border-0" type="button" data-bs-toggle="offcanvas" data-bs-target="#mobileMenu"
+        aria-controls="mobileMenu">
+        <span class="navbar-toggler-icon"></span>
+      </button>
 
-        <!-- CAMPO DE BUSCA DESKTOP -->
-        <form class="d-none d-lg-flex mx-auto w-50" role="search">
-          <div class="input-group">
-            <input class="form-control rounded-start-pill shadow-sm" type="search" placeholder="Pesquisar produtos..."
-              aria-label="Pesquisar">
-            <button class="btn btn-primary rounded-end-pill px-3" type="submit">
-              <i class="bi bi-search"></i>
-            </button>
-          </div>
-        </form>
-
-        <!-- LINKS E ÍCONES DESKTOP -->
-        <div class="collapse navbar-collapse" id="navbarContent">
-          <ul class="navbar-nav me-auto mb-2 mb-lg-0 fw-semibold">
-
-            <!-- PRODUTOS - DROPDOWN SEMPRE VISÍVEL -->
-            <li class="nav-item dropdown">
-              <a class="nav-link {% if request.resolver_match.url_name == 'index' %}active{% endif %} dropdown-toggle fw-semibold"
-                href="#" id="produtosDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                Categorias
-              </a>
-              <ul class="dropdown-menu shadow rounded-3" aria-labelledby="produtosDropdown">
-                <li><a class="dropdown-item" href="{% url 'category' 'ML' %}">Smartphones</a></li>
-                <li><a class="dropdown-item" href="{% url 'category' 'CR' %}">Notebooks</a></li>
-                <li><a class="dropdown-item" href="{% url 'category' 'CL' %}">Celulares & Acessórios</a></li>
-                <li><a class="dropdown-item" href="{% url 'category' 'EL' %}">Eletrônicos</a></li>
-                <li><a class="dropdown-item" href="{% url 'category' 'ES' %}">Esportes & Lazer</a></li>
-                <li><a class="dropdown-item" href="{% url 'category' 'IN' %}">Informática</a></li>
-                <li><a class="dropdown-item" href="{% url 'category' 'AU' %}">Áudio & Fones</a></li>
-                <li><a class="dropdown-item" href="{% url 'category' 'GA' %}">Games & Consoles</a></li>
-                <li><a class="dropdown-item" href="{% url 'category' 'CA' %}">Câmeras & Fotografia</a></li>
-                <li><a class="dropdown-item" href="{% url 'category' 'RE' %}">Relógios & Smartwatches</a></li>
-                <li><a class="dropdown-item text-primary fw-semibold" href="{% url 'category' 'OF' %}">🔥 Ofertas
-                    Especiais</a></li>
-              </ul>
-            </li>
-
-            <!-- Sobre e Contato -->
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'about' %}">Sobre</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'contact' %}">Contato</a>
-            </li>
-          </ul>
-
-          <!-- ÍCONES DESKTOP -->
-          <ul class="navbar-nav align-items-center ms-auto d-none d-xl-flex">
-
-            <!-- Lista de Desejos -->
-            <li class="nav-item mx-2">
-              <a href="#" class="nav-link position-relative">
-                <i class="bi bi-heart fs-5"></i>
-                <span
-                  class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger shadow-sm">4</span>
-              </a>
-            </li>
-
-            <!-- Carrinho -->
-            <li class="nav-item mx-2">
-              <a href="#" class="nav-link position-relative">
-                <i class="bi bi-cart3 fs-5"></i>
-                <span
-                  class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger shadow-sm">2</span>
-              </a>
-            </li>
-
-            <!-- Perfil Dropdown -->
-            <li class="nav-item dropdown mx-2">
-              <a class="nav-link dropdown-toggle fw-semibold d-flex align-items-center" href="#" id="perfilDropdown"
-                role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                <i class="bi bi-person-circle fs-5 me-1"></i>
-                Ricardo
-              </a>
-              <ul class="dropdown-menu shadow rounded-3" aria-labelledby="perfilDropdown">
-                <li><a class="dropdown-item" href="{% url 'profile' %}">Meu Perfil</a></li>
-                <li><a class="dropdown-item" href="#">Meus Pedidos</a></li>
-                <li><a class="dropdown-item" href="{% url 'password_reset' %}">Alterar Senha</a></li>
-                <li>
-                  <hr class="dropdown-divider">
-                </li>
-                <li><a class="dropdown-item text-danger fw-semibold" href="#">Sair</a></li>
-              </ul>
-            </li>
-
-            <!-- Login e Registro -->
-            <li class="nav-item mx-2">
-              <a href="{% url 'login' %}" class="btn btn-outline-primary px-3">Entrar</a>
-            </li>
-            <li class="nav-item mx-2">
-              <a href="{% url 'custom_registration' %}" class="btn btn-primary px-3">Registrar</a>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </nav>
-
-    <!-- MENU MOBILE / TABLET -->
-    <div class="offcanvas offcanvas-start" tabindex="-1" id="mobileMenu" aria-labelledby="mobileMenuLabel">
-      <div class="offcanvas-header">
-        <h5 class="offcanvas-title fw-bold text-primary" id="mobileMenuLabel">Meteoro</h5>
-        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Fechar"></button>
-      </div>
-      <div class="offcanvas-body d-flex flex-column">
-
-        <!-- CAMPO DE BUSCA MOBILE -->
-        <form class="d-flex mb-3" role="search">
-          <input class="form-control rounded-start-pill" type="search" placeholder="Pesquisar..."
+      <!-- CAMPO DE BUSCA DESKTOP -->
+      <form class="d-none d-lg-flex mx-auto w-50" role="search">
+        <div class="input-group">
+          <input class="form-control rounded-start-pill shadow-sm" type="search" placeholder="Pesquisar produtos..."
             aria-label="Pesquisar">
           <button class="btn btn-primary rounded-end-pill px-3" type="submit">
             <i class="bi bi-search"></i>
           </button>
-        </form>
+        </div>
+      </form>
 
-        <!-- MENU MOBILE COMPLETO (INCLUINDO PRODUTOS) -->
-        <ul class="navbar-nav flex-column">
-          <li class="nav-item">
-            <a class="nav-link fw-semibold" href="{% url 'index' %}"><i class="bi bi-house-door me-2"></i>Início</a>
-          </li>
-
-          <!-- PRODUTOS MOBILE SEM ESCONDER -->
+      <!-- LINKS E ÍCONES DESKTOP -->
+      <div class="collapse navbar-collapse" id="navbarContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0 fw-semibold">
+          <!-- Categorias sempre -->
           <li class="nav-item dropdown">
-            <a class="nav-link fw-semibold dropdown-toggle" href="#" id="produtosDropdownMobile" role="button"
-              data-bs-toggle="dropdown" aria-expanded="false">
-              <i class="bi bi-grid me-2"></i>Categorias
+            <a class="nav-link dropdown-toggle fw-semibold" href="#" id="produtosDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Categorias
             </a>
-            <ul class="dropdown-menu shadow rounded-3" aria-labelledby="produtosDropdownMobile">
+            <ul class="dropdown-menu shadow rounded-3" aria-labelledby="produtosDropdown">
               <li><a class="dropdown-item" href="{% url 'category' 'ML' %}">Smartphones</a></li>
               <li><a class="dropdown-item" href="{% url 'category' 'CR' %}">Notebooks</a></li>
               <li><a class="dropdown-item" href="{% url 'category' 'CL' %}">Celulares & Acessórios</a></li>
@@ -174,26 +66,114 @@
               <li><a class="dropdown-item" href="{% url 'category' 'GA' %}">Games & Consoles</a></li>
               <li><a class="dropdown-item" href="{% url 'category' 'CA' %}">Câmeras & Fotografia</a></li>
               <li><a class="dropdown-item" href="{% url 'category' 'RE' %}">Relógios & Smartwatches</a></li>
-              <li><a class="dropdown-item text-primary fw-semibold" href="{% url 'category' 'OF' %}">🔥 Ofertas
-                  Especiais</a></li>
+              <li><a class="dropdown-item text-primary fw-semibold" href="{% url 'category' 'OF' %}">🔥 Ofertas Especiais</a></li>
             </ul>
           </li>
 
-          <li class="nav-item">
-            <a class="nav-link fw-semibold" href="{% url 'about' %}"><i class="bi bi-info-circle me-2"></i>Sobre</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link fw-semibold" href="{% url 'contact' %}"><i class="bi bi-envelope me-2"></i>Contato</a>
-          </li>
+          <li class="nav-item"><a class="nav-link" href="{% url 'about' %}">Sobre</a></li>
+          <li class="nav-item"><a class="nav-link" href="{% url 'contact' %}">Contato</a></li>
         </ul>
 
-        <hr>
-        <a href="{% url 'login' %}" class="btn btn-outline-primary w-100 mb-2"><i class="bi bi-box-arrow-in-right me-2"></i>Entrar</a>
-        <a href="{% url 'custom_registration' %}" class="btn btn-primary w-100"><i
-            class="bi bi-person-plus me-2"></i>Registrar</a>
+        <!-- ÍCONES E PERFIL DESKTOP -->
+        <ul class="navbar-nav align-items-center ms-auto d-none d-xl-flex">
+          <!-- Lista de Desejos -->
+          <li class="nav-item mx-2">
+            <a href="#" class="nav-link position-relative">
+              <i class="bi bi-heart fs-5"></i>
+              <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger shadow-sm">4</span>
+            </a>
+          </li>
+          <!-- Carrinho -->
+          <li class="nav-item mx-2">
+            <a href="#" class="nav-link position-relative">
+              <i class="bi bi-cart3 fs-5"></i>
+              <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger shadow-sm">2</span>
+            </a>
+          </li>
+
+          {% if request.user.is_authenticated %}
+            <!-- Perfil Dropdown -->
+            <li class="nav-item dropdown mx-2">
+              <a class="nav-link dropdown-toggle fw-semibold d-flex align-items-center" href="#" id="perfilDropdown"
+                role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="bi bi-person-circle fs-5 me-1"></i>
+                {{ request.user.first_name|default:request.user.username }}
+              </a>
+              <ul class="dropdown-menu shadow rounded-3" aria-labelledby="perfilDropdown">
+                <li><a class="dropdown-item" href="{% url 'profile' %}">Meu Perfil</a></li>
+                <li><a class="dropdown-item" href="#">Meus Pedidos</a></li>
+                <li><a class="dropdown-item" href="{% url 'password_reset' %}">Alterar Senha</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li>
+                  <form action="{% url 'logout' %}" method="post" class="m-0">
+                    {% csrf_token %}
+                    <button type="submit" class="dropdown-item text-danger fw-semibold">Sair</button>
+                  </form>
+                </li>
+              </ul>
+            </li>
+          {% else %}
+            <li class="nav-item mx-2"><a href="{% url 'login' %}" class="btn btn-outline-primary px-3">Entrar</a></li>
+            <li class="nav-item mx-2"><a href="{% url 'custom_registration' %}" class="btn btn-primary px-3">Registrar</a></li>
+          {% endif %}
+        </ul>
       </div>
     </div>
-  </header>
+  </nav>
+
+  <!-- MENU MOBILE / TABLET -->
+  <div class="offcanvas offcanvas-start" tabindex="-1" id="mobileMenu" aria-labelledby="mobileMenuLabel">
+    <div class="offcanvas-header">
+      <h5 class="offcanvas-title fw-bold text-primary" id="mobileMenuLabel">Meteoro</h5>
+      <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Fechar"></button>
+    </div>
+    <div class="offcanvas-body d-flex flex-column">
+      <!-- CAMPO DE BUSCA MOBILE -->
+      <form class="d-flex mb-3" role="search">
+        <input class="form-control rounded-start-pill" type="search" placeholder="Pesquisar..." aria-label="Pesquisar">
+        <button class="btn btn-primary rounded-end-pill px-3" type="submit"><i class="bi bi-search"></i></button>
+      </form>
+
+      <!-- MENU MOBILE COMPLETO -->
+      <ul class="navbar-nav flex-column">
+        <li class="nav-item"><a class="nav-link fw-semibold" href="{% url 'index' %}"><i class="bi bi-house-door me-2"></i>Início</a></li>
+        <!-- Categorias mobile -->
+        <li class="nav-item dropdown">
+          <a class="nav-link fw-semibold dropdown-toggle" href="#" id="produtosDropdownMobile" role="button"
+             data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-grid me-2"></i>Categorias</a>
+          <ul class="dropdown-menu shadow rounded-3" aria-labelledby="produtosDropdownMobile">
+            <li><a class="dropdown-item" href="{% url 'category' 'ML' %}">Smartphones</a></li>
+            <li><a class="dropdown-item" href="{% url 'category' 'CR' %}">Notebooks</a></li>
+            <li><a class="dropdown-item" href="{% url 'category' 'CL' %}">Celulares & Acessórios</a></li>
+            <li><a class="dropdown-item" href="{% url 'category' 'EL' %}">Eletrônicos</a></li>
+            <li><a class="dropdown-item" href="{% url 'category' 'ES' %}">Esportes & Lazer</a></li>
+            <li><a class="dropdown-item" href="{% url 'category' 'IN' %}">Informática</a></li>
+            <li><a class="dropdown-item" href="{% url 'category' 'AU' %}">Áudio & Fones</a></li>
+            <li><a class="dropdown-item" href="{% url 'category' 'GA' %}">Games & Consoles</a></li>
+            <li><a class="dropdown-item" href="{% url 'category' 'CA' %}">Câmeras & Fotografia</a></li>
+            <li><a class="dropdown-item" href="{% url 'category' 'RE' %}">Relógios & Smartwatches</a></li>
+            <li><a class="dropdown-item text-primary fw-semibold" href="{% url 'category' 'OF' %}">🔥 Ofertas Especiais</a></li>
+          </ul>
+        </li>
+        <li class="nav-item"><a class="nav-link fw-semibold" href="{% url 'about' %}"><i class="bi bi-info-circle me-2"></i>Sobre</a></li>
+        <li class="nav-item"><a class="nav-link fw-semibold" href="{% url 'contact' %}"><i class="bi bi-envelope me-2"></i>Contato</a></li>
+      </ul>
+
+      <hr>
+      {% if request.user.is_authenticated %}
+        <a href="{% url 'profile' %}" class="btn btn-outline-primary w-100 mb-2"><i class="bi bi-person-circle me-2"></i>Meu Perfil</a>
+        <form action="{% url 'logout' %}" method="post" class="m-0">
+          {% csrf_token %}
+          <button type="submit" class="btn btn-danger w-100"><i class="bi bi-box-arrow-right me-2"></i>Sair</button>
+        </form>
+      {% else %}
+        <a href="{% url 'login' %}" class="btn btn-outline-primary w-100 mb-2"><i class="bi bi-box-arrow-in-right me-2"></i>Entrar</a>
+        <a href="{% url 'custom_registration' %}" class="btn btn-primary w-100"><i class="bi bi-person-plus me-2"></i>Registrar</a>
+      {% endif %}
+    </div>
+  </div>
+</header>
+
 
   {% block content %} {% endblock content%}
 
@@ -215,4 +195,5 @@
   <script src="{% static '/js/all.js' %}"></script>
   <script src="{% static '/js/myscript.js' %}"></script>
 </body>
+
 </html>
