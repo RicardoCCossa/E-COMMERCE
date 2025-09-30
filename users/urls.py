@@ -4,7 +4,6 @@ from users.views import (
     address,
     custom_registration_view,
     custom_login_view,
-    custom_password_reset_view,
     profile,
     updateAddress,
 )

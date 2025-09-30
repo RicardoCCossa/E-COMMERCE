@@ -1,6 +1,6 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import redirect, render, get_object_or_404
 
-from .models import Product
+from .models import Cart, Product
 
 
 # ================================
@@ -62,5 +62,17 @@ def category_title(request, title_slug):
 def product_detail(request, pk):
     product = get_object_or_404(Product, pk=pk)
     return render(request, "meteoro/productdetail.html", {"product": product})
+
+def add_to_cart(request):
+    user = request.user
+    product_id = request.GET.get('prod_id')
+    product = Product.objects.get(id=product_id)
+    Cart(user = user, product = product).save()
+    return redirect('cart/')
+
+def show_cart(request):
+    user = request.user
+    cart = Cart.objects.filter(user = user)
+    return render(request, 'meteoro/addtocart.html')
 
 
