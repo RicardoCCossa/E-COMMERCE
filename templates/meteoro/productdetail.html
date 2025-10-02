@@ -5,68 +5,81 @@
 {% block title %} Detalhes do Produto {% endblock title %}
 {% block content %}
 
-<div class="container py-5">
-    <div class="row g-5 align-items-start">
+<div class="container py-4">
+    <div class="row g-4 align-items-start">
 
         <!-- Product Image -->
-        <div class="col-lg-5 position-relative mb-4">
-            
-            <!-- Badges -->
-            {% if product.discounted_price < product.selling_price %}
-            <span class="badge bg-danger position-absolute top-0 start-0 m-2">Oferta</span>
-            {% endif %}
-            {% if product.data_da_publicacao|date:"U" > now|date:"U"|add:"-604800" %}
-            <span class="badge bg-success position-absolute top-0 end-0 m-2">Novo</span>
-            {% endif %}
+        <div class="col-12 col-md-6 col-lg-5 position-relative">
 
-            <div class="overflow-hidden rounded shadow-sm" style="max-height: 450px;">
-                {% if product.product_image %}
-                <img src="{{ product.product_image.url }}" 
-                     class="img-fluid w-100 product-detail-img" 
-                     alt="{{ product.title }}"
-                     style="object-fit: contain; transition: transform 0.3s;">
-                {% else %}
-                <svg class="bd-placeholder-img w-100" height="450" xmlns="http://www.w3.org/2000/svg"
-                     role="img" preserveAspectRatio="xMidYMid slice" focusable="false">
-                    <title>Sem imagem</title>
-                    <rect width="100%" height="100%" fill="#f0f0f0"></rect>
-                    <text x="50%" y="50%" fill="#999" dy=".3em" text-anchor="middle" font-size="24">
-                        Sem imagem
-                    </text>
-                </svg>
+            <!-- Badges -->
+            {% if product.discounted_price < product.selling_price %} <span
+                class="badge bg-danger position-absolute top-0 start-0 m-2">Oferta</span>
                 {% endif %}
-            </div>
+                {% if product.data_da_publicacao|date:"U" > now|date:"U"|add:"-604800" %}
+                <span class="badge bg-success position-absolute top-0 end-0 m-2">Novo</span>
+                {% endif %}
+
+                <div class="overflow-hidden rounded shadow-sm w-100" style="max-height: 450px;">
+                    {% if product.product_image %}
+                    <img src="{{ product.product_image.url }}" class="img-fluid w-100 product-detail-img"
+                        alt="{{ product.title }}" style="object-fit: contain; transition: transform 0.3s;">
+                    {% else %}
+                    <svg class="bd-placeholder-img w-100" height="450" xmlns="http://www.w3.org/2000/svg" role="img"
+                        preserveAspectRatio="xMidYMid slice" focusable="false">
+                        <title>Sem imagem</title>
+                        <rect width="100%" height="100%" fill="#f0f0f0"></rect>
+                        <text x="50%" y="50%" fill="#999" dy=".3em" text-anchor="middle" font-size="20">
+                            Sem imagem
+                        </text>
+                    </svg>
+                    {% endif %}
+                </div>
         </div>
 
         <!-- Product Details -->
-        <div class="col-lg-6">
-            <h1 class="display-5 fw-bold mb-3">{{ product.title }}</h1>
+        <div class="col-12 col-md-6 col-lg-6">
+            <h1 class="h3 fw-bold mb-3">{{ product.title }}</h1>
 
             <!-- Prices -->
             <div class="mb-3">
-                <h3 class="text-danger fw-bold">{{ product.discounted_price|metical }}</h3>
-                {% if product.discounted_price < product.selling_price %}
-                <small class="text-muted text-decoration-line-through fs-5">
+                <h3 class="text-danger fw-bold mb-0">{{ product.discounted_price|metical }}</h3>
+                {% if product.discounted_price < product.selling_price %} <small
+                    class="text-muted text-decoration-line-through fs-6">
                     {{ product.selling_price|metical }}
-                </small>
-                {% endif %}
+                    </small>
+                    {% endif %}
             </div>
 
             <!-- Composition -->
-            <h5 class="mt-4">Composição</h5>
+            {% if product.composition %}
+            <h6 class="mt-3">Composição</h6>
             <p class="fs-6 text-muted">{{ product.composition }}</p>
+            {% endif %}
 
             <!-- Description -->
-            <h5 class="mt-4">Descrição do Produto</h5>
+            {% if product.description %}
+            <h6 class="mt-3">Descrição</h6>
             <p class="fs-6">{{ product.description }}</p>
+            {% endif %}
 
             <!-- Buttons -->
-            <div class="d-flex flex-wrap gap-3 mt-4">
-                <button type="submit" class="btn btn-danger btn-lg px-4">
-                    Adicionar ao Carrinho
-                </button>
-                <a href="#" class="btn btn-dark btn-lg px-4">
-                    Comprar Agora
+            <div class="d-flex flex-column flex-sm-row flex-wrap gap-3 mt-4">
+                <!-- Add to Cart -->
+                <form action="{% url 'cart_add' %}" method="get" class="d-inline">
+                    <input type="hidden" name="prod_id" value="{{ product.id }}">
+                    <button type="submit" class="btn btn-danger btn-lg w-100 w-sm-auto">
+                        Adicionar ao Carrinho
+                    </button>
+                </form>
+
+                <!-- Go to Cart -->
+                <a href="{% url 'cart' %}" class="btn btn-dark btn-lg w-100 w-sm-auto">
+                    Ver Carrinho
+                </a>
+
+                <!-- Checkout direto -->
+                <a href="{% url 'checkout' %}" class="btn btn-success btn-lg w-100 w-sm-auto">
+                    Finalizar Compra
                 </a>
             </div>
         </div>
@@ -75,9 +88,21 @@
 
 <!-- CSS Hover Imagem -->
 <style>
-.product-detail-img:hover {
-    transform: scale(1.05);
-}
+    .product-detail-img:hover {
+        transform: scale(1.05);
+    }
+
+    /* Mobile Ajustes */
+    @media (max-width: 576px) {
+        h1.h3 {
+            font-size: 1.4rem;
+        }
+
+        .btn-lg {
+            font-size: 1rem;
+            padding: 0.6rem 1rem;
+        }
+    }
 </style>
 
 {% endblock content %}

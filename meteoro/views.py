@@ -1,7 +1,6 @@
-from django.shortcuts import redirect, render, get_object_or_404
-
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, redirect, get_object_or_404
 from .models import Cart, Product
-
 
 # ================================
 # Home Page
@@ -20,6 +19,7 @@ def about(request):
 
 def contact(request):
     return render(request, "meteoro/contact.html")
+
 
 # ================================
 # Produtos por categoria
@@ -63,16 +63,39 @@ def product_detail(request, pk):
     product = get_object_or_404(Product, pk=pk)
     return render(request, "meteoro/productdetail.html", {"product": product})
 
+
+# ================================
+# Carrinho de compras
+# ================================
+@login_required(login_url='login')
 def add_to_cart(request):
-    user = request.user
-    product_id = request.GET.get('prod_id')
-    product = Product.objects.get(id=product_id)
-    Cart(user = user, product = product).save()
-    return redirect('cart/')
+    product_id = request.GET.get("prod_id")
+
+    if not product_id:
+        return redirect("cart")  # nenhum produto selecionado
+
+    try:
+        product_id = int(product_id)
+    except ValueError:
+        return redirect("cart")
+
+    product = get_object_or_404(Product, id=product_id)
+
+    # Se quiser evitar duplicados, podes usar get_or_create:
+    Cart.objects.get_or_create(user=request.user, product=product)
+
+    return redirect("cart")
+
 
 def show_cart(request):
-    user = request.user
-    cart = Cart.objects.filter(user = user)
-    return render(request, 'meteoro/addtocart.html')
+    cart_items = Cart.objects.filter(user=request.user)
+    return render(request, "meteoro/addtocart.html", {"cart_items": cart_items})
 
 
+# ================================
+# Checkout
+# ================================
+def checkout(request):
+    # Em breve: lógica para finalizar a compra
+    cart_items = Cart.objects.filter(user=request.user)
+    return render(request, "meteoro/checkout.html", {"cart_items": cart_items})
