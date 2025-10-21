@@ -1,0 +1,9 @@
+{% extends 'partials/base.html' %}
+{% block title %}Pedido Confirmado{% endblock title %}
+{% block content %}
+<div class="container text-center py-5">
+  <h1 class="text-success mb-4"><i class="bi bi-check-circle-fill"></i> Pedido Confirmado!</h1>
+  <p class="lead">Obrigado por comprar conosco! Em breve entraremos em contacto para confirmar a entrega.</p>
+  <a href="{% url 'index' %}" class="btn btn-outline-primary mt-3">Voltar à Loja</a>
+</div>
+{% endblock %}

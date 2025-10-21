@@ -34,15 +34,6 @@ class Product(models.Model):
     def __str__(self):
         return self.title
 
-    @property
-    def em_promocao(self):
-        return self.discounted_price < self.selling_price
-
-    @property
-    def desconto_percentual(self):
-        if self.selling_price > 0:
-            return round(100 - (self.discounted_price * 100 / self.selling_price), 2)
-        return 0
 
 
 class Cart(models.Model):
@@ -60,3 +51,26 @@ class Cart(models.Model):
     @property
     def total_cost(self):
         return self.quantity * self.product.discounted_price
+
+
+class Order(models.Model):
+    STATUS_CHOICES = [
+        ('PENDENTE', 'Pendente'),
+        ('PROCESSANDO', 'Processando'),
+        ('ENVIADO', 'Enviado'),
+        ('CONCLUÍDO', 'Concluído'),
+    ]
+
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    full_name = models.CharField("Nome completo", max_length=100)
+    phone = models.CharField("Telefone", max_length=15)
+    province = models.CharField("Província", max_length=100)
+    city = models.CharField("Cidade/Distrito", max_length=100)
+    neighborhood = models.CharField("Bairro", max_length=100)
+    address = models.TextField("Endereço detalhado")
+    total = models.FloatField("Total do pedido")
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='PENDENTE')
+    date = models.DateTimeField(default=timezone.now)
+
+    def __str__(self):
+        return f"Pedido #{self.id} - {self.user.username}"

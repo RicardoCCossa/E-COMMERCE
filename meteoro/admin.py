@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Product, Cart
+from .models import Order, Product, Cart
 
 class Products(admin.ModelAdmin):
     list_display = ('id', 'title', 'selling_price', 'discounted_price', 'category', 'product_image')
@@ -12,3 +12,10 @@ class Carts(admin.ModelAdmin):
     list_display_links = ('id', 'user',)
 
 admin.site.register(Cart, Carts)
+
+    
+class Orders(admin.ModelAdmin):
+    list_display = ('id', 'user', 'total', 'status')
+    
+    
+admin.site.register(Order, Orders)

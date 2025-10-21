@@ -1,0 +1,58 @@
+{% extends 'partials/base.html' %}
+{% load static %}
+{% load currency_filters %}
+
+{% block title %}Finalizar Compra{% endblock title %}
+
+{% block content %}
+<div class="container my-5">
+  <h2 class="text-center mb-4">🚚 Informações de Entrega</h2>
+
+  <form method="POST" class="card p-4 shadow-sm border-0 rounded-3 mx-auto" style="max-width: 700px;">
+    {% csrf_token %}
+
+    <div class="mb-3">
+      <label class="form-label fw-bold">Nome completo</label>
+      <input type="text" name="full_name" class="form-control" placeholder="Ex: Ricardo Cossa" required>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label fw-bold">Telefone</label>
+      <input type="text" name="phone" class="form-control" placeholder="Ex: +258 84 123 4567" required>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6 mb-3">
+        <label class="form-label fw-bold">Província</label>
+        <input type="text" name="province" class="form-control" placeholder="Ex: Maputo" required>
+      </div>
+      <div class="col-md-6 mb-3">
+        <label class="form-label fw-bold">Cidade/Distrito</label>
+        <input type="text" name="city" class="form-control" placeholder="Ex: Matola" required>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6 mb-3">
+        <label class="form-label fw-bold">Bairro</label>
+        <input type="text" name="neighborhood" class="form-control" placeholder="Ex: Tchumene 2" required>
+      </div>
+      <div class="col-md-6 mb-3">
+        <label class="form-label fw-bold">Endereço detalhado</label>
+        <input type="text" name="address" class="form-control" placeholder="Casa nº, rua, referência..." required>
+      </div>
+    </div>
+
+    <div class="border-top pt-3 mt-3 text-center">
+      <h5>Total: <span class="text-success fw-bold">{{ totalamount|metical }}</span></h5>
+      <p class="text-muted small">🚚 Transporte: Grátis para todo Moçambique</p>
+    </div>
+
+    <div class="d-grid mt-4">
+      <button type="submit" class="btn btn-primary btn-lg">
+        <i class="bi bi-check-circle"></i> Confirmar Pedido
+      </button>
+    </div>
+  </form>
+</div>
+{% endblock %}

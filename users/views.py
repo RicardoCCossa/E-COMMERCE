@@ -38,7 +38,7 @@ def custom_login_view(request):
 def custom_password_reset_view(request):
     return render(request, 'users/passwordReset.html')
 
-@login_required
+@login_required(login_url='login')
 def profile(request):
     """
     View para criar ou atualizar o perfil do usuário logado.

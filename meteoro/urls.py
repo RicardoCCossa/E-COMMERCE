@@ -1,5 +1,7 @@
 from django.urls import path
 from meteoro import views
+from django.views.generic import TemplateView
+
 
 urlpatterns = [
     # ================================
@@ -22,4 +24,11 @@ urlpatterns = [
     path('cart/', views.show_cart, name='cart'),
     path('cart/add/', views.add_to_cart, name='cart_add'),
     path('checkout/', views.checkout, name='checkout'),
+    path('pedido-confirmado/', TemplateView.as_view(template_name="meteoro/order_confirmed.html"), name='order_confirmed'),
+
+    path('pluscart/', views.plus_cart, name='plus_cart'),
+    path('minuscart/', views.minus_cart, name='minus_cart'),
+    path('removecart/', views.remove_cart, name='remove_cart'),
+
+
 ]
