@@ -1,0 +1,36 @@
+{% extends 'partials/base.html' %}
+{% load currency_filters %}
+
+{% block title %}Meus Pedidos{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <h3>Bem-vindo, <span class="text-capitalize">{{ request.user }}</span></h3>
+
+    {% if orders %}
+        {% for order in orders %}
+        <div class="card shadow-sm my-4">
+            <div class="card-header bg-light">
+                <strong>Pedido #{{ order.id }}</strong> - {{ order.date|date:"d/m/Y H:i" }}
+                <span class="badge bg-info text-dark float-end">{{ order.status }}</span>
+            </div>
+            <div class="card-body">
+                {% for item in order.items.all %}
+                    <div class="d-flex align-items-center mb-3">
+                        <img src="{{ item.product.product_image.url }}" alt="{{ item.product.title }}" width="80" height="80" class="me-3 rounded shadow-sm">
+                        <div>
+                            <p class="mb-1"><strong>{{ item.product.title }}</strong></p>
+                            <p class="mb-0 text-muted">Qtd: {{ item.quantity }} | Total: {{ item.total_cost|metical }}</p>
+                        </div>
+                    </div>
+                {% endfor %}
+                <hr>
+                <p class="fw-bold text-end">Total: {{ order.total|metical }}</p>
+            </div>
+        </div>
+        {% endfor %}
+    {% else %}
+        <h5 class="text-center text-muted mt-5">Nenhum pedido encontrado 😕</h5>
+    {% endif %}
+</div>
+{% endblock %}

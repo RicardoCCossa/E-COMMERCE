@@ -1,8 +1,9 @@
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Cart, Product
+from .models import Cart, Product, Order, OrderItem
 from django.db.models import Q
+from django.contrib import messages
 
 # ================================
 # Home Page
@@ -11,17 +12,14 @@ def index(request):
     products = Product.objects.all()
     return render(request, "meteoro/index.html", {"products": products})
 
-
 # ================================
 # Páginas estáticas
 # ================================
 def about(request):
     return render(request, "meteoro/about.html")
 
-
 def contact(request):
     return render(request, "meteoro/contact.html")
-
 
 # ================================
 # Produtos por categoria
@@ -38,7 +36,6 @@ def category(request, category_slug):
             "selected_category": category_slug,
         },
     )
-
 
 # ================================
 # Produtos com o mesmo título
@@ -57,14 +54,12 @@ def category_title(request, title_slug):
         },
     )
 
-
 # ================================
 # Detalhes do produto
 # ================================
 def product_detail(request, pk):
     product = get_object_or_404(Product, pk=pk)
     return render(request, "meteoro/productdetail.html", {"product": product})
-
 
 # ================================
 # Carrinho de compras
@@ -96,86 +91,60 @@ def show_cart(request):
         "totalamount": totalamount,
     })
 
-
 # ================================
 # Checkout
 # ================================
-from django.shortcuts import render, redirect
-from .models import Cart
+
+
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.shortcuts import render, redirect
+from .models import Cart, Order, OrderItem
 
 @login_required
 def checkout(request):
-    cart_items = Cart.objects.filter(user=request.user)
+    user = request.user
+    cart_items = Cart.objects.filter(user=user)
     totalamount = sum(item.total_cost for item in cart_items)
 
     if request.method == "POST":
-        nome = request.POST.get("nome")
-        telefone = request.POST.get("telefone")
-        cidade = request.POST.get("cidade")
-        bairro = request.POST.get("bairro")
-        referencia = request.POST.get("referencia")
-
-        if not all([nome, telefone, cidade, bairro]):
-            messages.error(request, "Por favor, preencha todos os campos obrigatórios.")
-        else:
-            # Aqui você poderia salvar as informações em um modelo Pedido (Order)
-            messages.success(request, "✅ Pedido confirmado com sucesso! Entraremos em contacto para entrega.")
-            # Limpa o carrinho (opcional)
-            cart_items.delete()
-            return redirect("home")  # ou outra página de sucesso
-
-    return render(request, "meteoro/checkout.html", {
-        "cart_items": cart_items,
-        "totalamount": totalamount,
-    })
-
-
-
-from django.shortcuts import render, redirect
-from .models import Cart, Order
-from django.contrib import messages
-
-def checkout(request):
-    user = request.user
-    cart_items = Cart.objects.filter(user=user)
-    
-    # Calcula total
-    amount = sum(item.quantity * item.product.discounted_price for item in cart_items)
-    totalamount = amount  # transporte grátis
-
-    if request.method == "POST":
-        full_name = request.POST.get("full_name")
-        phone = request.POST.get("phone")
-        province = request.POST.get("province")
-        city = request.POST.get("city")
-        neighborhood = request.POST.get("neighborhood")
-        address = request.POST.get("address")
-
         # Cria o pedido
         order = Order.objects.create(
             user=user,
-            full_name=full_name,
-            phone=phone,
-            province=province,
-            city=city,
-            neighborhood=neighborhood,
-            address=address,
+            full_name=request.POST.get("full_name"),
+            phone=request.POST.get("phone"),
+            province=request.POST.get("province"),
+            city=request.POST.get("city"),
+            neighborhood=request.POST.get("neighborhood"),
+            address=request.POST.get("address"),
             total=totalamount,
         )
 
-        # Limpa o carrinho após confirmar
+        # Cria os itens do pedido
+        for item in cart_items:
+            OrderItem.objects.create(
+                order=order,
+                product=item.product,
+                quantity=item.quantity,
+                price=item.product.discounted_price
+            )
+
+        # Limpa o carrinho
         cart_items.delete()
 
-        messages.success(request, "✅ Pedido confirmado com sucesso!")
-        return redirect("order_confirmed")
+        # Mensagem de confirmação
+        messages.success(request, "✅ Pedido realizado com sucesso! Em breve entraremos em contacto.")
 
-    context = {"cart_items": cart_items, "totalamount": totalamount}
-    return render(request, "meteoro/checkout.html", context)
+        # Redireciona para página de pedidos
+        return redirect("orders")
+
+    return render(request, "meteoro/checkout.html", {"cart_items": cart_items, "totalamount": totalamount})
 
 
-
+@login_required
+def orders(request):
+    orders = Order.objects.filter(user=request.user).prefetch_related('items__product')
+    return render(request, 'meteoro/orders.html', {'orders': orders})
 
 # ================================
 # AJAX - Incrementar quantidade
@@ -202,7 +171,6 @@ def plus_cart(request):
         except Cart.DoesNotExist:
             return JsonResponse({'error': 'Produto não encontrado no carrinho'}, status=404)
     return JsonResponse({'error': 'Método inválido'}, status=400)
-
 
 # ================================
 # AJAX - Diminuir quantidade
@@ -232,7 +200,6 @@ def minus_cart(request):
         except Cart.DoesNotExist:
             return JsonResponse({'error': 'Produto não encontrado'}, status=404)
     return JsonResponse({'error': 'Método inválido'}, status=400)
-
 
 # ================================
 # AJAX - Remover produto

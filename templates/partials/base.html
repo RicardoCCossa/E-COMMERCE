@@ -86,7 +86,7 @@
           </li>
           <!-- Carrinho -->
           <li class="nav-item mx-2">
-            <a href="#" class="nav-link position-relative">
+            <a href="{% url 'cart' %}" class="nav-link position-relative">
               <i class="bi bi-cart3 fs-5"></i>
               <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger shadow-sm">2</span>
             </a>
@@ -102,7 +102,7 @@
               </a>
               <ul class="dropdown-menu shadow rounded-3" aria-labelledby="perfilDropdown">
                 <li><a class="dropdown-item" href="{% url 'profile' %}">Meu Perfil</a></li>
-                <li><a class="dropdown-item" href="#">Meus Pedidos</a></li>
+                <li><a class="dropdown-item" href="{% url 'orders' %}">Meus Pedidos</a></li>
                 <li><a class="dropdown-item" href="{% url 'password_reset' %}">Alterar Senha</a></li>
                 <li><hr class="dropdown-divider"></li>
                 <li>
@@ -175,6 +175,23 @@
   </div>
 </header>
 
+{% if messages %}
+<div aria-live="polite" aria-atomic="true" class="position-relative">
+  <div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 2000">
+    {% for message in messages %}
+    <div class="toast align-items-center text-white bg-success border-0 shadow" role="alert" data-bs-delay="9000">
+      <div class="d-flex">
+        <div class="toast-body">
+          {{ message }}
+        </div>
+        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+{% endif %}
+
 
   {% block content %} {% endblock content%}
 
@@ -195,6 +212,18 @@
   <script src="{% static 'js/owl.carousel.min.js' %}"></script>
   <script src="{% static 'js/all.js' %}"></script>
   <script src="{% static 'js/myscript.js' %}"></script>
+
+  <script>
+  document.addEventListener("DOMContentLoaded", function() {
+    const toastElList = [].slice.call(document.querySelectorAll('.toast'))
+    const toastList = toastElList.map(function(toastEl) {
+      const toast = new bootstrap.Toast(toastEl)
+      toast.show()
+      return toast
+    })
+  })
+</script>
+
 </body>
 
 </html>
